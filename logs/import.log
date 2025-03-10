@@ -1,0 +1,207 @@
+2025-03-10 16:26:52,422 - werkzeug - WARNING -  * Debugger is active!
+2025-03-10 16:26:52,435 - werkzeug - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:27:25,760 - werkzeug - INFO -  * Running on http://127.0.0.1:8992/ (Press CTRL+C to quit)
+2025-03-10 16:27:25,761 - werkzeug - INFO -  * Restarting with stat
+2025-03-10 16:27:26,109 - werkzeug - WARNING -  * Debugger is active!
+2025-03-10 16:27:26,117 - werkzeug - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:27:28,812 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:27:28] "GET / HTTP/1.1" 200 -
+2025-03-10 16:27:31,074 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:27:31] "GET /logs HTTP/1.1" 200 -
+2025-03-10 16:27:39,914 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:27:39] "GET / HTTP/1.1" 200 -
+2025-03-10 16:27:43,795 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:27:43] "GET /logs HTTP/1.1" 200 -
+2025-03-10 16:27:45,815 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:27:45] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:27:48,057 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:27:48] "[32mPOST /import_bill HTTP/1.1[0m" 302 -
+2025-03-10 16:27:48,062 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:27:48] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:28:01,061 - finance_app - INFO - 开始导入会话 20250310162801, 文件名: 微信支付账单(20250201-20250228)——【解压密码可在微信支付公众号查看】.csv, 账单类型: wechat
+2025-03-10 16:28:01,062 - finance_app - INFO - 导入会话 20250310162801: CSV文件前3行: [['\ufeff微信支付账单明细', '', '', '', '', '', '', '', ''], ['微信昵称：[晓术]', '', '', '', '', '', '', '', ''], ['起始时间：[2025-02-01 00:00:00] 终止时间：[2025-02-28 23:59:59]', '', '', '', '', '', '', '', '']]
+2025-03-10 16:28:01,081 - finance_app - INFO - 导入会话 20250310162801: 成功导入 38 条记录, 16 条记录导入失败
+2025-03-10 16:28:01,082 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:28:01] "[32mPOST /import_bill HTTP/1.1[0m" 302 -
+2025-03-10 16:28:01,091 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:28:01] "GET / HTTP/1.1" 200 -
+2025-03-10 16:28:06,347 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:28:06] "GET /logs HTTP/1.1" 200 -
+2025-03-10 16:28:18,137 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:28:18] "GET /download_logs HTTP/1.1" 200 -
+2025-03-10 16:28:55,249 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:28:55] "GET / HTTP/1.1" 200 -
+2025-03-10 16:28:59,144 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:28:59] "GET /income HTTP/1.1" 200 -
+2025-03-10 16:29:01,948 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:29:01] "GET /expense HTTP/1.1" 200 -
+2025-03-10 16:29:05,578 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:29:05] "GET /expense?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:29:31,156 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:29:31] "GET /expense?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:29:32,084 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:29:32] "GET /expense?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:29:37,289 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:29:37] "GET / HTTP/1.1" 200 -
+2025-03-10 16:29:40,222 - werkzeug - INFO - 127.0.0.1 - - [10/Mar/2025 16:29:40] "GET /?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:33:42,673 - werkzeug - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:33:42,675 - werkzeug - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:33:42,741 - werkzeug - INFO -  * Restarting with stat
+2025-03-10 16:33:43,174 - WARNING -  * Debugger is active!
+2025-03-10 16:33:43,174 - WARNING -  * Debugger is active!
+2025-03-10 16:33:43,190 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:33:43,190 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:34:34,251 - INFO - 127.0.0.1 - - [10/Mar/2025 16:34:34] "GET / HTTP/1.1" 200 -
+2025-03-10 16:34:37,557 - INFO - 127.0.0.1 - - [10/Mar/2025 16:34:37] "GET /logs HTTP/1.1" 200 -
+2025-03-10 16:34:41,798 - INFO - 127.0.0.1 - - [10/Mar/2025 16:34:41] "GET / HTTP/1.1" 200 -
+2025-03-10 16:34:43,078 - INFO - 127.0.0.1 - - [10/Mar/2025 16:34:43] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:34:59,563 - INFO -  * Running on http://127.0.0.1:8992/ (Press CTRL+C to quit)
+2025-03-10 16:34:59,563 - INFO -  * Restarting with stat
+2025-03-10 16:34:59,885 - WARNING -  * Debugger is active!
+2025-03-10 16:34:59,897 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:35:04,295 - INFO - 127.0.0.1 - - [10/Mar/2025 16:35:04] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:35:55,666 - INFO - ===== 开始导入会话 20250310163555 =====
+2025-03-10 16:35:55,666 - INFO - 文件名: 微信支付账单(20250201-20250228)——【解压密码可在微信支付公众号查看】.csv, 账单类型: wechat
+2025-03-10 16:35:55,667 - INFO - CSV标题行: ['\ufeff微信支付账单明细', '', '', '', '', '', '', '', '']
+2025-03-10 16:35:55,688 - INFO - 成功导入 38 条记录, 16 条记录导入失败
+2025-03-10 16:35:55,688 - INFO - ===== 导入会话 20250310163555 结束 =====
+2025-03-10 16:35:55,690 - INFO - 127.0.0.1 - - [10/Mar/2025 16:35:55] "[32mPOST /import_bill HTTP/1.1[0m" 302 -
+2025-03-10 16:35:55,713 - INFO - 127.0.0.1 - - [10/Mar/2025 16:35:55] "GET / HTTP/1.1" 200 -
+2025-03-10 16:35:59,468 - INFO - 127.0.0.1 - - [10/Mar/2025 16:35:59] "GET /logs HTTP/1.1" 200 -
+2025-03-10 16:36:28,250 - INFO - 127.0.0.1 - - [10/Mar/2025 16:36:28] "GET /download_logs HTTP/1.1" 200 -
+2025-03-10 16:40:33,973 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:40:34,065 - INFO -  * Restarting with stat
+2025-03-10 16:40:34,415 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:40:34,500 - WARNING -  * Debugger is active!
+2025-03-10 16:40:34,507 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:40:34,773 - WARNING -  * Debugger is active!
+2025-03-10 16:40:34,786 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:40:47,408 - INFO - 127.0.0.1 - - [10/Mar/2025 16:40:47] "GET /logs HTTP/1.1" 200 -
+2025-03-10 16:40:49,012 - INFO - 127.0.0.1 - - [10/Mar/2025 16:40:49] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:40:50,764 - INFO - 127.0.0.1 - - [10/Mar/2025 16:40:50] "GET /logs HTTP/1.1" 200 -
+2025-03-10 16:40:55,002 - INFO - 127.0.0.1 - - [10/Mar/2025 16:40:55] "GET / HTTP/1.1" 200 -
+2025-03-10 16:40:57,701 - INFO - 127.0.0.1 - - [10/Mar/2025 16:40:57] "GET /income HTTP/1.1" 200 -
+2025-03-10 16:40:58,810 - INFO - 127.0.0.1 - - [10/Mar/2025 16:40:58] "GET /expense HTTP/1.1" 200 -
+2025-03-10 16:41:00,329 - INFO - 127.0.0.1 - - [10/Mar/2025 16:41:00] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:41:01,286 - INFO - 127.0.0.1 - - [10/Mar/2025 16:41:01] "GET /income HTTP/1.1" 200 -
+2025-03-10 16:41:04,494 - INFO - 127.0.0.1 - - [10/Mar/2025 16:41:04] "GET /income?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:41:18,269 - INFO - 127.0.0.1 - - [10/Mar/2025 16:41:18] "GET /expense HTTP/1.1" 200 -
+2025-03-10 16:41:23,001 - INFO - 127.0.0.1 - - [10/Mar/2025 16:41:23] "GET /expense?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:41:46,381 - INFO - 127.0.0.1 - - [10/Mar/2025 16:41:46] "GET /expense HTTP/1.1" 200 -
+2025-03-10 16:41:47,555 - INFO - 127.0.0.1 - - [10/Mar/2025 16:41:47] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:43:06,017 - INFO - 127.0.0.1 - - [10/Mar/2025 16:43:06] "GET /income HTTP/1.1" 200 -
+2025-03-10 16:43:06,745 - INFO - 127.0.0.1 - - [10/Mar/2025 16:43:06] "GET /expense HTTP/1.1" 200 -
+2025-03-10 16:43:10,733 - INFO - 127.0.0.1 - - [10/Mar/2025 16:43:10] "GET /expense?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:44:09,001 - INFO - 127.0.0.1 - - [10/Mar/2025 16:44:09] "GET /logs HTTP/1.1" 200 -
+2025-03-10 16:44:52,016 - INFO - 127.0.0.1 - - [10/Mar/2025 16:44:52] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:45:26,387 - INFO - 127.0.0.1 - - [10/Mar/2025 16:45:26] "GET /expense HTTP/1.1" 200 -
+2025-03-10 16:45:28,997 - INFO - 127.0.0.1 - - [10/Mar/2025 16:45:28] "GET /expense?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:47:35,286 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:47:35,287 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:47:35,350 - INFO -  * Restarting with stat
+2025-03-10 16:47:35,910 - WARNING -  * Debugger is active!
+2025-03-10 16:47:35,910 - WARNING -  * Debugger is active!
+2025-03-10 16:47:35,927 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:47:35,927 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:48:21,256 - INFO - 127.0.0.1 - - [10/Mar/2025 16:48:21] "GET /expense?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:48:31,704 - INFO - 127.0.0.1 - - [10/Mar/2025 16:48:31] "GET /expense?year=2025&month=2&category=其他&subcategory=未分类 HTTP/1.1" 200 -
+2025-03-10 16:48:35,892 - INFO - 127.0.0.1 - - [10/Mar/2025 16:48:35] "GET /expense?year=2025&month=2&category=其他&subcategory=餐厅 HTTP/1.1" 200 -
+2025-03-10 16:48:40,693 - INFO - 127.0.0.1 - - [10/Mar/2025 16:48:40] "GET /expense?year=2025&month=2&category=食品&subcategory=餐厅 HTTP/1.1" 200 -
+2025-03-10 16:48:43,310 - INFO - 127.0.0.1 - - [10/Mar/2025 16:48:43] "GET /expense?year=2025&month=2&category=食品&subcategory= HTTP/1.1" 200 -
+2025-03-10 16:48:45,904 - INFO - 127.0.0.1 - - [10/Mar/2025 16:48:45] "GET /expense?year=2025&month=2&category=&subcategory= HTTP/1.1" 200 -
+2025-03-10 16:49:08,824 - INFO - 127.0.0.1 - - [10/Mar/2025 16:49:08] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:49:15,807 - INFO - 127.0.0.1 - - [10/Mar/2025 16:49:15] "GET /income HTTP/1.1" 200 -
+2025-03-10 16:49:20,738 - INFO - 127.0.0.1 - - [10/Mar/2025 16:49:20] "GET /income?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:50:36,633 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:50:36,634 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:50:36,690 - INFO -  * Restarting with stat
+2025-03-10 16:50:37,171 - WARNING -  * Debugger is active!
+2025-03-10 16:50:37,171 - WARNING -  * Debugger is active!
+2025-03-10 16:50:37,190 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:50:37,195 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:50:42,105 - INFO - 127.0.0.1 - - [10/Mar/2025 16:50:42] "GET /income?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:50:46,799 - INFO - 127.0.0.1 - - [10/Mar/2025 16:50:46] "GET /income?year=2025&month=2&category=其他&subcategory= HTTP/1.1" 200 -
+2025-03-10 16:50:47,630 - INFO - 127.0.0.1 - - [10/Mar/2025 16:50:47] "GET /income HTTP/1.1" 200 -
+2025-03-10 16:50:52,107 - INFO - 127.0.0.1 - - [10/Mar/2025 16:50:52] "GET /income?year=2025&month=3&category=&subcategory= HTTP/1.1" 200 -
+2025-03-10 16:50:55,373 - INFO - 127.0.0.1 - - [10/Mar/2025 16:50:55] "GET /income?year=2025&month=2&category=&subcategory= HTTP/1.1" 200 -
+2025-03-10 16:50:56,407 - INFO - 127.0.0.1 - - [10/Mar/2025 16:50:56] "GET /income HTTP/1.1" 200 -
+2025-03-10 16:51:02,422 - INFO - 127.0.0.1 - - [10/Mar/2025 16:51:02] "GET /income?year=2025&month=2&category=其他&subcategory=未分类 HTTP/1.1" 200 -
+2025-03-10 16:51:10,359 - INFO - 127.0.0.1 - - [10/Mar/2025 16:51:10] "GET /expense HTTP/1.1" 200 -
+2025-03-10 16:53:47,089 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:53:47,090 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:53:47,134 - INFO -  * Restarting with stat
+2025-03-10 16:53:47,632 - WARNING -  * Debugger is active!
+2025-03-10 16:53:47,632 - WARNING -  * Debugger is active!
+2025-03-10 16:53:47,643 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:53:47,644 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:54:27,238 - INFO - 127.0.0.1 - - [10/Mar/2025 16:54:27] "GET /expense HTTP/1.1" 200 -
+2025-03-10 16:54:34,517 - INFO - 127.0.0.1 - - [10/Mar/2025 16:54:34] "GET /expense?year=2025&month=2&category=&subcategory= HTTP/1.1" 200 -
+2025-03-10 16:55:31,122 - INFO - 127.0.0.1 - - [10/Mar/2025 16:55:31] "GET /expense?year=2025&month=2&category=食品&subcategory=餐厅 HTTP/1.1" 200 -
+2025-03-10 16:55:55,065 - INFO - 127.0.0.1 - - [10/Mar/2025 16:55:55] "GET /add HTTP/1.1" 200 -
+2025-03-10 16:56:00,288 - INFO - 127.0.0.1 - - [10/Mar/2025 16:56:00] "GET / HTTP/1.1" 200 -
+2025-03-10 16:56:03,389 - INFO - 127.0.0.1 - - [10/Mar/2025 16:56:03] "GET /?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 16:57:57,558 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:57:57,560 - INFO -  * Detected change in '/Users/xiaoshu/Desktop/记账/app.py', reloading
+2025-03-10 16:57:57,622 - INFO -  * Restarting with stat
+2025-03-10 16:57:58,071 - WARNING -  * Debugger is active!
+2025-03-10 16:57:58,071 - WARNING -  * Debugger is active!
+2025-03-10 16:57:58,085 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:57:58,088 - INFO -  * Debugger PIN: 614-159-767
+2025-03-10 16:58:42,012 - INFO - 127.0.0.1 - - [10/Mar/2025 16:58:42] "[35m[1mGET /?year=2025&month=2 HTTP/1.1[0m" 500 -
+2025-03-10 16:58:42,047 - INFO - 127.0.0.1 - - [10/Mar/2025 16:58:42] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-03-10 16:58:42,048 - INFO - 127.0.0.1 - - [10/Mar/2025 16:58:42] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-03-10 16:58:42,087 - INFO - 127.0.0.1 - - [10/Mar/2025 16:58:42] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+2025-03-10 16:58:42,087 - INFO - 127.0.0.1 - - [10/Mar/2025 16:58:42] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-03-10 16:58:42,128 - INFO - 127.0.0.1 - - [10/Mar/2025 16:58:42] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-03-10 17:01:05,763 - INFO - 127.0.0.1 - - [10/Mar/2025 17:01:05] "GET /?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 17:03:03,560 - INFO - 127.0.0.1 - - [10/Mar/2025 17:03:03] "GET /?year=2025&month=2 HTTP/1.1" 200 -
+2025-03-10 17:05:54,526 - INFO - 127.0.0.1 - - [10/Mar/2025 17:05:54] "GET / HTTP/1.1" 200 -
+2025-03-10 17:07:17,238 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:17] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:07:22,314 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:22] "GET /income?year=2025&month=2&category=&subcategory= HTTP/1.1" 200 -
+2025-03-10 17:07:33,030 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:33] "GET /expense HTTP/1.1" 200 -
+2025-03-10 17:07:40,004 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:40] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:07:42,947 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:42] "GET /expense HTTP/1.1" 200 -
+2025-03-10 17:07:49,008 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:49] "GET / HTTP/1.1" 200 -
+2025-03-10 17:07:49,862 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:49] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:07:51,195 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:51] "GET / HTTP/1.1" 200 -
+2025-03-10 17:07:55,265 - INFO - 127.0.0.1 - - [10/Mar/2025 17:07:55] "GET /add HTTP/1.1" 200 -
+2025-03-10 17:19:12,543 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:12] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-03-10 17:19:12,572 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:12] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-03-10 17:19:12,572 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:12] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-03-10 17:19:12,613 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:12] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+2025-03-10 17:19:12,614 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:12] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-03-10 17:19:12,652 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:12] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-03-10 17:19:14,944 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:14] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-03-10 17:19:14,957 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:14] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-03-10 17:19:14,957 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:14] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-03-10 17:19:14,962 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:14] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-03-10 17:19:14,968 - INFO - 127.0.0.1 - - [10/Mar/2025 17:19:14] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+2025-03-10 17:21:31,229 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:31] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-03-10 17:21:31,247 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:31] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-03-10 17:21:31,248 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:31] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-03-10 17:21:31,253 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:31] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-03-10 17:21:31,261 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:31] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+2025-03-10 17:21:33,249 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:33] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-03-10 17:21:33,262 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:33] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-03-10 17:21:33,262 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:33] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-03-10 17:21:33,278 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:33] "GET /?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1" 200 -
+2025-03-10 17:21:33,278 - INFO - 127.0.0.1 - - [10/Mar/2025 17:21:33] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-03-10 17:22:10,184 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:10] "GET / HTTP/1.1" 200 -
+2025-03-10 17:22:18,132 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:18] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:22:18,870 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:18] "GET /expense HTTP/1.1" 200 -
+2025-03-10 17:22:19,742 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:19] "GET /add HTTP/1.1" 200 -
+2025-03-10 17:22:20,938 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:20] "GET / HTTP/1.1" 200 -
+2025-03-10 17:22:42,340 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:42] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:22:43,105 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:43] "GET /expense HTTP/1.1" 200 -
+2025-03-10 17:22:43,731 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:43] "GET /add HTTP/1.1" 200 -
+2025-03-10 17:22:44,757 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:44] "GET /logs HTTP/1.1" 200 -
+2025-03-10 17:22:45,906 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:45] "GET /add HTTP/1.1" 200 -
+2025-03-10 17:22:46,859 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:46] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:22:48,900 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:48] "GET / HTTP/1.1" 200 -
+2025-03-10 17:22:58,193 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:58] "GET /expense HTTP/1.1" 200 -
+2025-03-10 17:22:58,897 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:58] "GET /add HTTP/1.1" 200 -
+2025-03-10 17:22:59,721 - INFO - 127.0.0.1 - - [10/Mar/2025 17:22:59] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:23:00,791 - INFO - 127.0.0.1 - - [10/Mar/2025 17:23:00] "GET / HTTP/1.1" 200 -
+2025-03-10 17:23:34,521 - INFO - 127.0.0.1 - - [10/Mar/2025 17:23:34] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:23:35,305 - INFO - 127.0.0.1 - - [10/Mar/2025 17:23:35] "GET /expense HTTP/1.1" 200 -
+2025-03-10 17:23:46,708 - INFO - 127.0.0.1 - - [10/Mar/2025 17:23:46] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:23:49,492 - INFO - 127.0.0.1 - - [10/Mar/2025 17:23:49] "GET /logs HTTP/1.1" 200 -
+2025-03-10 17:23:50,294 - INFO - 127.0.0.1 - - [10/Mar/2025 17:23:50] "GET /add HTTP/1.1" 200 -
+2025-03-10 17:24:28,423 - INFO - 127.0.0.1 - - [10/Mar/2025 17:24:28] "GET / HTTP/1.1" 200 -
+2025-03-10 17:24:48,341 - INFO - 127.0.0.1 - - [10/Mar/2025 17:24:48] "GET /income HTTP/1.1" 200 -
+2025-03-10 17:25:26,670 - INFO - 127.0.0.1 - - [10/Mar/2025 17:25:26] "GET /add HTTP/1.1" 200 -
+2025-03-10 17:25:27,305 - INFO - 127.0.0.1 - - [10/Mar/2025 17:25:27] "GET /expense HTTP/1.1" 200 -
+2025-03-10 17:25:32,892 - INFO - 127.0.0.1 - - [10/Mar/2025 17:25:32] "GET /add HTTP/1.1" 200 -
+2025-03-10 17:26:26,833 - INFO - 127.0.0.1 - - [10/Mar/2025 17:26:26] "GET / HTTP/1.1" 200 -
+2025-03-10 17:27:14,997 - INFO - 127.0.0.1 - - [10/Mar/2025 17:27:14] "GET /?year=2024 HTTP/1.1" 200 -
+2025-03-10 17:27:22,314 - INFO - 127.0.0.1 - - [10/Mar/2025 17:27:22] "GET /?year=2025 HTTP/1.1" 200 -
+2025-03-10 17:27:27,036 - INFO - 127.0.0.1 - - [10/Mar/2025 17:27:27] "GET / HTTP/1.1" 200 -
+2025-03-10 17:27:28,547 - INFO - 127.0.0.1 - - [10/Mar/2025 17:27:28] "GET / HTTP/1.1" 200 -
+2025-03-10 17:27:29,995 - INFO - 127.0.0.1 - - [10/Mar/2025 17:27:29] "GET /logs HTTP/1.1" 200 -
+2025-03-10 18:13:05,661 - INFO - 127.0.0.1 - - [10/Mar/2025 18:13:05] "GET /logs HTTP/1.1" 200 -
+2025-03-10 18:13:08,289 - INFO - 127.0.0.1 - - [10/Mar/2025 18:13:08] "GET / HTTP/1.1" 200 -
+2025-03-10 18:13:10,711 - INFO - 127.0.0.1 - - [10/Mar/2025 18:13:10] "GET /expense HTTP/1.1" 200 -
+2025-03-10 18:13:11,393 - INFO - 127.0.0.1 - - [10/Mar/2025 18:13:11] "GET /income HTTP/1.1" 200 -
+2025-03-10 18:13:12,783 - INFO - 127.0.0.1 - - [10/Mar/2025 18:13:12] "GET /add HTTP/1.1" 200 -

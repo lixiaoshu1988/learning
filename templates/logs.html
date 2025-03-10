@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>导入日志</h2>
+    
+    <div class="mb-3">
+        <a href="{{ url_for('download_logs') }}" class="btn btn-primary">下载日志文件</a>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">返回首页</a>
+    </div>
+    
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            日志内容 (最新的在前面)
+        </div>
+        <div class="card-body">
+            <div class="log-container" style="max-height: 600px; overflow-y: auto; font-family: monospace; white-space: pre-wrap; background-color: #f8f9fa; padding: 15px; border-radius: 5px;">
+                {% for line in log_content %}
+                    {% if '===== 开始导入会话' in line %}
+                        <div class="bg-primary text-white p-1 mt-3">{{ line }}</div>
+                    {% elif '===== 导入会话' in line and '结束' in line %}
+                        <div class="bg-primary text-white p-1 mb-3">{{ line }}</div>
+                    {% elif '===== 失败详情' in line %}
+                        <div class="bg-warning text-dark p-1">{{ line }}</div>
+                    {% elif 'ERROR' in line %}
+                        <div class="text-danger">{{ line }}</div>
+                    {% elif 'WARNING' in line %}
+                        <div class="text-warning">{{ line }}</div>
+                    {% elif 'INFO' in line %}
+                        <div class="text-info">{{ line }}</div>
+                    {% else %}
+                        <div>{{ line }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

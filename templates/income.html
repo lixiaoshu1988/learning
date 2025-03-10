@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>收入记录</h2>
+
+<!-- 添加筛选表单 -->
+<div class="card mb-4">
+    <div class="card-header">
+        筛选
+    </div>
+    <div class="card-body">
+        <form method="GET" class="row g-3 align-items-end">
+            <div class="col-auto">
+                <label class="form-label">年份</label>
+                <select name="year" class="form-select">
+                    {% for year in years %}
+                    <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}年</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label">月份</label>
+                <select name="month" class="form-select">
+                    {% for month in months %}
+                    <option value="{{ month }}" {% if month == selected_month %}selected{% endif %}>{{ month }}月</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label">类别</label>
+                <select name="category" class="form-select">
+                    <option value="">全部类别</option>
+                    {% for category in all_categories %}
+                    <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label">二级分类</label>
+                <select name="subcategory" class="form-select">
+                    <option value="">全部二级分类</option>
+                    {% for subcategory in all_subcategories %}
+                    <option value="{{ subcategory }}" {% if subcategory == selected_subcategory %}selected{% endif %}>{{ subcategory }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">筛选</button>
+                <a href="{{ url_for('income') }}" class="btn btn-secondary">重置</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 收入记录列表 -->
+{% for year_month, transactions in grouped_transactions.items() %}
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        {{ year_month }}
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>类别</th>
+                        <th>二级分类</th>
+                        <th>金额</th>
+                        <th>描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ transaction.category }}</td>
+                        <td>{{ transaction.subcategory or '-' }}</td>
+                        <td class="text-success">{{ '%.2f' % transaction.amount }}</td>
+                        <td>{{ transaction.description or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+    没有找到收入记录
+</div>
+{% endfor %}
+{% endblock %}

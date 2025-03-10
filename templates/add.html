@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>添加交易记录</h2>
+
+<!-- 添加账单导入功能 -->
+<div class="card mb-4">
+    <div class="card-header">
+        账单导入
+    </div>
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for('import_bill') }}">
+            <div class="mb-3">
+                <label class="form-label">账单类型</label>
+                <select name="bill_type" class="form-select" style="width: auto; min-width: 150px;">
+                    <option value="alipay">支付宝账单</option>
+                    <option value="wechat">微信账单</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">上传账单文件 (CSV格式)</label>
+                <input type="file" name="bill_file" class="form-control" style="width: auto; min-width: 300px;" accept=".csv">
+            </div>
+            <button type="submit" class="btn btn-success">导入账单</button>
+        </form>
+    </div>
+</div>
+
+<!-- 原有的手动添加表单 -->
+<div class="card">
+    <div class="card-header">
+        手动添加
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">类型</label>
+                <select name="type" class="form-select" required id="type-select" style="width: auto; min-width: 100px;">
+                    <option value="income" {% if request.form.get('type') == 'income' %}selected{% endif %}>收入</option>
+                    <option value="expense" {% if request.form.get('type') == 'expense' %}selected{% endif %}>支出</option>
+                </select>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">年份</label>
+                    <select name="year" class="form-select" style="width: auto; min-width: 100px;">
+                        {% for year in range(2020, 2051) %}
+                        <option value="{{ year }}" {% if year == current_year %}selected{% endif %}>{{ year }}年</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">月份</label>
+                    <select name="month" class="form-select" style="width: auto; min-width: 100px;">
+                        {% for month in months %}
+                        <option value="{{ month }}" {% if month == current_month %}selected{% endif %}>{{ month }}月</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">类别</label>
+                <select name="category" class="form-select" required id="category-select" style="width: auto; min-width: 150px;">
+                    {% if request.form.get('type') == 'income' or not request.form.get('type') %}
+                        <option value="工资">工资</option>
+                        <option value="理财">理财</option>
+                        <option value="其他">其他</option>
+                    {% else %}
+                        <option value="食品">食品</option>
+                        <option value="购物">购物</option>
+                        <option value="宠物">宠物</option>
+                        <option value="住房">住房</option>
+                        <option value="交通">交通</option>
+                        <option value="休闲娱乐">休闲娱乐</option>
+                        <option value="医疗保健">医疗保健</option>
+                        <option value="工作学习">工作学习</option>
+                        <option value="金融保险">金融保险</option>
+                        <option value="人情往来">人情往来</option>
+                        <option value="育儿">育儿</option>
+                        <option value="其他">其他</option>
+                    {% endif %}
+                </select>
+            </div>
+            
+            <!-- 添加二级分类选择框 -->
+            <div class="mb-3" id="subcategory-container" style="display: none;">
+                <label class="form-label">二级分类</label>
+                <select name="subcategory" class="form-select" id="subcategory-select" style="width: auto; min-width: 150px;">
+                    <!-- 二级分类选项将通过JavaScript动态填充 -->
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">金额</label>
+                <input type="number" step="0.01" name="amount" class="form-control" style="width: auto; min-width: 150px;" required>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">描述</label>
+                <input type="text" name="description" class="form-control" style="width: auto; min-width: 300px;">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">添加记录</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // 定义支出类别的二级分类映射
+    const subcategories = {
+        '食品': ['超市', '外卖', '餐厅', '零食饮料'],
+        '购物': ['网购', '服饰', '数码电子', '日用家居'],
+        '宠物': ['宠物食品', '宠物医疗', '其他宠物支出'],
+        '住房': ['房租', '水电费', '物业费', '维修装修'],
+        '交通': ['公共交通', '打车', '加油', '停车费'],
+        '休闲娱乐': ['电影', '游戏', '旅游', '健身运动'],
+        '医疗保健': ['就医', '药品', '体检'],
+        '工作学习': ['书籍', '培训课程', '办公用品'],
+        '金融保险': ['保险', '理财投资', '手续费'],
+        '人情往来': ['红包', '礼金礼物', '请客'],
+        '育儿': ['儿童食品', '儿童玩具', '儿童教育', '其他育儿支出'],
+        '其他': ['未分类']
+    };
+    
+    // 收入类别的二级分类
+    const incomeSubcategories = {
+        '工资': ['正常工资', '奖金', '兼职'],
+        '理财': ['利息', '股票', '基金', '其他理财'],
+        '其他': ['红包', '报销', '其他收入']
+    };
+    
+    // 类型选择变化时的处理函数
+    document.getElementById('type-select').addEventListener('change', function() {
+        const categorySelect = document.getElementById('category-select');
+        const subcategoryContainer = document.getElementById('subcategory-container');
+        const isIncome = this.value === 'income';
+        
+        // 更新一级分类选项
+        categorySelect.innerHTML = isIncome ? 
+            `<option value="工资">工资</option>
+             <option value="理财">理财</option>
+             <option value="其他">其他</option>` :
+            `<option value="食品">食品</option>
+             <option value="购物">购物</option>
+             <option value="宠物">宠物</option>
+             <option value="住房">住房</option>
+             <option value="交通">交通</option>
+             <option value="休闲娱乐">休闲娱乐</option>
+             <option value="医疗保健">医疗保健</option>
+             <option value="工作学习">工作学习</option>
+             <option value="金融保险">金融保险</option>
+             <option value="人情往来">人情往来</option>
+             <option value="育儿">育儿</option>
+             <option value="其他">其他</option>`;
+        
+        // 触发类别变化事件，更新二级分类
+        categorySelect.dispatchEvent(new Event('change'));
+    });
+    
+    // 类别选择变化时的处理函数
+    document.getElementById('category-select').addEventListener('change', function() {
+        const subcategorySelect = document.getElementById('subcategory-select');
+        const subcategoryContainer = document.getElementById('subcategory-container');
+        const isIncome = document.getElementById('type-select').value === 'income';
+        const selectedCategory = this.value;
+        
+        // 清空二级分类选项
+        subcategorySelect.innerHTML = '';
+        
+        // 根据选择的类型和类别，填充二级分类选项
+        if (isIncome) {
+            if (incomeSubcategories[selectedCategory]) {
+                incomeSubcategories[selectedCategory].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subcategorySelect.appendChild(option);
+                });
+                subcategoryContainer.style.display = 'block';
+            } else {
+                subcategoryContainer.style.display = 'none';
+            }
+        } else {
+            if (subcategories[selectedCategory]) {
+                subcategories[selectedCategory].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subcategorySelect.appendChild(option);
+                });
+                subcategoryContainer.style.display = 'block';
+            } else {
+                subcategoryContainer.style.display = 'none';
+            }
+        }
+    });
+    
+    // 页面加载时触发类别变化事件，初始化二级分类
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('category-select').dispatchEvent(new Event('change'));
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>支出记录</h2>
+
+<!-- 添加筛选表单 -->
+<div class="card mb-4">
+    <div class="card-header">
+        筛选
+    </div>
+    <div class="card-body">
+        <form method="GET" class="row g-3 align-items-end">
+            <div class="col-auto">
+                <label class="form-label">年份</label>
+                <select name="year" class="form-select">
+                    {% for year in years %}
+                    <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}年</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label">月份</label>
+                <select name="month" class="form-select">
+                    {% for month in months %}
+                    <option value="{{ month }}" {% if month == selected_month %}selected{% endif %}>{{ month }}月</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label">类别</label>
+                <select name="category" class="form-select">
+                    <option value="">全部类别</option>
+                    {% for category in all_categories %}
+                    <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="form-label">二级分类</label>
+                <select name="subcategory" class="form-select">
+                    <option value="">全部二级分类</option>
+                    {% for subcategory in all_subcategories %}
+                    <option value="{{ subcategory }}" {% if subcategory == selected_subcategory %}selected{% endif %}>{{ subcategory }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">筛选</button>
+                <a href="{{ url_for('expense') }}" class="btn btn-secondary">重置</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 支出统计信息 -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                类别统计 ({{ selected_year }}年{{ selected_month }}月)
+            </div>
+            <div class="card-body">
+                <p>当月总支出: <strong>{{ '%.2f' % monthly_total }}</strong> | 当年总支出: <strong>{{ '%.2f' % yearly_total }}</strong></p>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>类别</th>
+                                <th>金额</th>
+                                <th>占当月支出</th>
+                                <th>占当年支出</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category, data in category_stats.items() %}
+                            <tr>
+                                <td>{{ category }}</td>
+                                <td class="text-danger">{{ '%.2f' % data.amount }}</td>
+                                <td>{{ '%.2f' % data.monthly_percentage }}%</td>
+                                <td>{{ '%.2f' % data.yearly_percentage }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                二级分类统计 ({{ selected_year }}年{{ selected_month }}月)
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>类别</th>
+                                <th>二级分类</th>
+                                <th>金额</th>
+                                <th>占当月支出</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, data in subcategory_stats.items() %}
+                            <tr>
+                                <td>{{ data.category }}</td>
+                                <td>{{ data.subcategory }}</td>
+                                <td class="text-danger">{{ '%.2f' % data.amount }}</td>
+                                <td>{{ '%.2f' % data.monthly_percentage }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 支出记录列表 -->
+{% for year_month, transactions in grouped_transactions.items() %}
+<div class="card mb-4">
+    <div class="card-header bg-danger text-white">
+        {{ year_month }}
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>类别</th>
+                        <th>二级分类</th>
+                        <th>金额</th>
+                        <th>占比</th>
+                        <th>描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ transaction.category }}</td>
+                        <td>{{ transaction.subcategory or '-' }}</td>
+                        <td class="text-danger">{{ '%.2f' % transaction.amount }}</td>
+                        <td>{{ '%.2f' % (transaction.amount / monthly_total * 100) if monthly_total > 0 else 0 }}%</td>
+                        <td>{{ transaction.description or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+    没有找到支出记录
+</div>
+{% endfor %}
+{% endblock %}
