@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
 import csv
 import io
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate  
+import os
+import pandas as pd
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
@@ -327,218 +329,176 @@ def expense():
                           monthly_total=monthly_total,
                           yearly_total=yearly_total)
 
+# 添加交易记录路由
 @app.route('/add', methods=['GET', 'POST'])
 def add_transaction():
     if request.method == 'POST':
-        type = request.form['type']
-        category = request.form['category']
-        subcategory = request.form.get('subcategory', '')  # 获取二级分类
-        amount_str = request.form['amount']
-        description = request.form.get('description', '')
-        year = request.form.get('year')
-        month = request.form.get('month')
+        transaction_type = request.form.get('type')
+        category = request.form.get('category')
+        subcategory = request.form.get('subcategory')
+        amount = request.form.get('amount')
+        description = request.form.get('description')
         
-        # 验证金额字段
-        if not amount_str:
-            flash('金额不能为空！', 'error')
-            return redirect(url_for('add_transaction'))
+        # 获取日期信息
+        year = int(request.form.get('year'))
+        month = int(request.form.get('month'))
+        day = int(request.form.get('day'))
         
-        try:
-            amount = float(amount_str)
-        except ValueError:
-            flash('请输入有效的金额！', 'error')
-            return redirect(url_for('add_transaction'))
+        # 创建日期对象
+        transaction_date = datetime(year, month, day)
         
-        # 处理年份和月份
-        try:
-            if year and month:
-                # 设置为当月的第一天
-                date = datetime(int(year), int(month), 1)
-            else:
-                # 如果未提供年份或月份，使用当前日期
-                now = datetime.now()
-                date = datetime(now.year, now.month, 1)
-        except ValueError:
-            flash('年份或月份格式无效！', 'error')
-            return redirect(url_for('add_transaction'))
-        
+        # 创建新交易记录
         transaction = Transaction(
-            type=type,
+            type=transaction_type,
             category=category,
-            subcategory=subcategory,  # 添加二级分类
-            amount=amount,
+            subcategory=subcategory,
+            amount=float(amount),
             description=description,
-            date=date
+            date=transaction_date
         )
         
+        # 添加到数据库
         db.session.add(transaction)
         db.session.commit()
-        flash('交易记录已添加！', 'success')
         
-        # 根据交易类型重定向到相应页面
-        if type == 'income':
-            return redirect(url_for('income'))
-        else:
-            return redirect(url_for('expense'))
+        flash('交易记录已添加', 'success')
+        return redirect(url_for('index'))
     
-    # 获取当前年份和最近几年的选项
+    # 获取当前年月日
     current_year = datetime.now().year
-    years = range(current_year - 5, current_year + 1)
-    months = range(1, 13)
     
-    # 将 datetime 对象传递给模板
     return render_template('add.html', 
-                          years=years, 
-                          months=months, 
+                          years=range(2020, 2051), 
+                          months=range(1, 13), 
+                          days=range(1, 32), 
                           current_year=current_year, 
                           current_month=datetime.now().month,
                           datetime=datetime)  # 添加这一行
 
-# 添加账单导入路由
-# 在文件顶部添加必要的导入
-import os
-import logging
-from flask import send_file
+# 添加账单导入相关路由
+@app.route('/download_template')
+def download_template():
+    # 创建一个内存中的CSV文件
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # 写入表头
+    writer.writerow(['交易时间', '交易类型', '交易对方', '商品', '收/支', '金额(元)', 
+                    '支付方式', '当前状态', '交易单号', '商户单号', '备注'])
+    
+    # 写入示例数据
+    writer.writerow(['2023-01-01 12:00:00', '消费', '超市', '日用品', '支出', '100.00', 
+                    '支付宝', '交易成功', '202301010001', 'M202301010001', '购买日用品'])
+    
+    # 将指针移到文件开头
+    output.seek(0)
+    
+    # 发送文件
+    return send_file(
+        io.BytesIO(output.getvalue().encode('utf-8-sig')),
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name='finance_template.csv'
+    )
 
-# 设置日志目录
-log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
-if not os.path.exists(log_dir):
-    os.makedirs(log_dir)
-
-# 配置日志
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(os.path.join(log_dir, 'import.log'), encoding='utf-8'),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger('finance_app')
-
-# 修改导入账单路由
-@app.route('/import_bill', methods=['POST'])
+@app.route('/import_bill', methods=['GET', 'POST'])
 def import_bill():
-    if 'bill_file' not in request.files:
-        flash('没有选择文件', 'danger')
-        return redirect(url_for('add_transaction'))
-    
-    file = request.files['bill_file']
-    if file.filename == '':
-        flash('没有选择文件', 'danger')
-        return redirect(url_for('add_transaction'))
-    
-    bill_type = request.form.get('bill_type')
-    
-    # 创建导入会话ID，用于标识本次导入
-    import_session_id = datetime.now().strftime('%Y%m%d%H%M%S')
-    logger.info(f"===== 开始导入会话 {import_session_id} =====")
-    logger.info(f"文件名: {file.filename}, 账单类型: {bill_type}")
-    
-    if file and file.filename.endswith('.csv'):
-        try:
-            # 读取CSV文件内容
-            stream = io.StringIO(file.stream.read().decode("utf-8", errors='ignore'), newline=None)
-            csv_data = csv.reader(stream)
-            
-            # 获取所有行用于调试
-            rows = list(csv_data)
-            
-            # 检查是否有数据
-            if len(rows) <= 1:  # 只有标题行或没有数据
-                logger.error(f"CSV文件没有数据或格式不正确")
-                flash('CSV文件没有数据或格式不正确', 'danger')
-                return redirect(url_for('add_transaction'))
-            
-            # 记录CSV文件的标题行
-            logger.info(f"CSV标题行: {rows[0]}")
-            
-            # 跳过标题行
-            rows = rows[1:]
-            
-            success_count = 0
-            error_count = 0
-            error_details = []
-            
-            for row_index, row in enumerate(rows):
-                try:
-                    # 检查行数据是否足够
-                    if len(row) < 6:
-                        error_msg = f"第{row_index+2}行数据不足: {row}"
-                        logger.warning(error_msg)
-                        error_details.append(error_msg)
-                        error_count += 1
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('没有选择文件', 'error')
+            return redirect(request.url)
+        
+        file = request.files['file']
+        
+        if file.filename == '':
+            flash('没有选择文件', 'error')
+            return redirect(request.url)
+        
+        if file and file.filename.endswith('.csv'):
+            try:
+                # 读取CSV文件
+                stream = io.StringIO(file.stream.read().decode('utf-8-sig'))
+                df = pd.read_csv(stream)
+                
+                # 导入计数器
+                imported_count = 0
+                
+                # 处理每一行数据
+                for _, row in df.iterrows():
+                    # 解析日期时间
+                    try:
+                        transaction_date = datetime.strptime(str(row['交易时间']), '%Y-%m-%d %H:%M:%S')
+                    except:
+                        transaction_date = datetime.now()
+                    
+                    # 确定交易类型
+                    income_expense = str(row.get('收/支', '')).strip()
+                    if income_expense == '支出':
+                        transaction_type = 'expense'
+                    elif income_expense == '收入':
+                        transaction_type = 'income'
+                    else:
+                        # 跳过非收入或支出的记录
                         continue
                     
-                    # 根据账单类型解析数据
-                    if bill_type == 'alipay':
-                        try:
-                            # 支付宝账单格式解析
-                            # 尝试不同的日期格式
-                            try:
-                                transaction_date = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
-                            except ValueError:
-                                try:
-                                    transaction_date = datetime.strptime(row[0], '%Y/%m/%d %H:%M:%S')
-                                except ValueError:
-                                    transaction_date = datetime.strptime(row[0], '%Y.%m.%d %H:%M:%S')
-                            
-                            # 检查收支类型
-                            if '收入' in row[4]:
-                                transaction_type = 'income'
-                            elif '支出' in row[4]:
-                                transaction_type = 'expense'
+                    # 确定分类 - 使用默认值防止空值
+                    category = str(row.get('交易类型', '其他'))
+                    if category == 'nan' or not category:
+                        category = '其他'  # 设置默认分类
+                        
+                    subcategory = str(row.get('商品', ''))
+                    if subcategory == 'nan':
+                        subcategory = ''  # 二级分类可以为空
+                    
+                    # 获取金额 - 改进金额处理逻辑
+                    try:
+                        # 检查金额列是否存在
+                        if '金额(元)' in row:
+                            amount_str = str(row['金额(元)']).strip()
+                            # 处理可能的格式问题，如逗号分隔符、货币符号等
+                            amount_str = amount_str.replace(',', '').replace('¥', '').replace('￥', '')
+                            if amount_str and amount_str.lower() != 'nan':
+                                amount = float(amount_str)
                             else:
-                                transaction_type = 'expense'  # 默认为支出
-                            
-                            # 处理金额
-                            amount_str = row[5].replace('¥', '').replace(',', '').strip()
-                            amount = float(amount_str)
-                            
-                            # 获取分类
-                            description = row[3] if len(row) > 3 else ""
-                            category, subcategory = map_alipay_category(description)
-                            
-                        except Exception as e:
-                            error_msg = f"支付宝格式解析错误(第{row_index+2}行): {str(e)}\n原始数据: {row}"
-                            logger.error(error_msg)
-                            error_details.append(error_msg)
-                            error_count += 1
-                            continue
-                            
-                    elif bill_type == 'wechat':
-                        try:
-                            # 微信账单格式解析
-                            try:
-                                transaction_date = datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S')
-                            except ValueError:
-                                try:
-                                    transaction_date = datetime.strptime(row[0], '%Y/%m/%d %H:%M:%S')
-                                except ValueError:
-                                    transaction_date = datetime.strptime(row[0], '%Y.%m.%d %H:%M:%S')
-                            
-                            # 检查收支类型
-                            if '收入' in row[4]:
-                                transaction_type = 'income'
-                            elif '支出' in row[4]:
-                                transaction_type = 'expense'
-                            else:
-                                transaction_type = 'expense'  # 默认为支出
-                            
-                            # 处理金额
-                            amount_str = row[5].replace('¥', '').replace(',', '').strip()
-                            amount = float(amount_str)
-                            
-                            # 获取分类
-                            description = row[3] if len(row) > 3 else ""
-                            category, subcategory = map_wechat_category(description)
-                            
-                        except Exception as e:
-                            error_details.append(f"微信格式解析错误(第{row_index+2}行): {str(e)}\n原始数据: {row}")
-                            error_count += 1
+                                amount = 0.0
+                        else:
+                            amount = 0.0
+                    except Exception as e:
+                        print(f"金额转换错误: {e}, 原始值: {row.get('金额(元)', 'N/A')}")
+                        amount = 0.0  # 转换失败时使用默认金额
+                    
+                    # 创建描述 - 处理可能的空值
+                    trade_partner = str(row.get('交易对方', ''))
+                    if trade_partner == 'nan':
+                        trade_partner = ''
+                        
+                    payment_method = str(row.get('支付方式', ''))
+                    if payment_method == 'nan':
+                        payment_method = ''
+                        
+                    remark = str(row.get('备注', ''))
+                    if remark == 'nan':
+                        remark = ''
+                    
+                    # 获取交易单号用于去重
+                    transaction_id = str(row.get('交易单号', ''))
+                    if transaction_id == 'nan':
+                        transaction_id = ''
+                        
+                    # 检查是否已存在相同交易单号的记录
+                    if transaction_id:
+                        existing_transaction = Transaction.query.filter(
+                            Transaction.description.like(f"%{transaction_id}%")
+                        ).first()
+                        
+                        if existing_transaction:
+                            # 跳过已存在的记录
                             continue
                     
-                    # 使用SQLAlchemy添加到数据库
+                    # 将交易单号添加到描述中
+                    description = f"交易对方: {trade_partner}, 支付方式: {payment_method}, 交易单号: {transaction_id}, 备注: {remark}"
+                    
+                    # 创建新交易记录
                     transaction = Transaction(
                         type=transaction_type,
                         category=category,
@@ -548,193 +508,25 @@ def import_bill():
                         date=transaction_date
                     )
                     
+                    # 添加到数据库
                     db.session.add(transaction)
-                    success_count += 1
-                    
-                except Exception as e:
-                    error_count += 1
-                    error_msg = f"处理第{row_index+2}行时出错: {str(e)}\n原始数据: {row}"
-                    logger.error(error_msg)
-                    error_details.append(error_msg)
-                    continue
-            
-            # 提交所有成功的记录
-            if success_count > 0:
+                    imported_count += 1
+                
+                # 提交所有更改
                 db.session.commit()
-                result_msg = f'成功导入 {success_count} 条记录' + (f', {error_count} 条记录导入失败' if error_count > 0 else '')
-                logger.info(result_msg)
-                flash(result_msg, 'success')
                 
-                # 如果有错误，提示用户查看日志
-                if error_count > 0:
-                    flash(f'您可以在<a href="{url_for("view_import_logs")}">日志页面</a>查看导入失败的详细信息', 'info')
-            else:
-                # 记录详细错误信息
-                logger.error(f"导入失败，所有记录均未导入")
-                logger.error(f"===== 失败详情 =====")
-                for detail in error_details:
-                    logger.error(detail)
-                flash('导入失败，请检查文件格式是否正确。您可以在日志页面查看详细错误信息。', 'danger')
+                flash(f'成功导入 {imported_count} 条交易记录', 'success')
+                return redirect(url_for('index'))
                 
-            logger.info(f"===== 导入会话 {import_session_id} 结束 =====")
-            return redirect(url_for('index'))
-        
-        except Exception as e:
-            db.session.rollback()
-            logger.exception(f"导入过程中发生错误: {str(e)}")
-            flash(f'导入过程中发生错误: {str(e)}', 'danger')
-            return redirect(url_for('add_transaction'))
-    
-    logger.warning(f"上传的文件不是CSV格式")
-    flash('请上传CSV格式的文件', 'danger')
-    return redirect(url_for('add_transaction'))
-
-# 添加查看导入日志的路由
-@app.route('/logs')
-def view_import_logs():
-    log_file = os.path.join(log_dir, 'import.log')
-    
-    # 如果日志文件不存在，创建一个空文件
-    if not os.path.exists(log_file):
-        with open(log_file, 'w', encoding='utf-8') as f:
-            f.write("暂无导入日志\n")
-    
-    # 读取日志文件内容
-    with open(log_file, 'r', encoding='utf-8') as f:
-        log_content = f.readlines()
-    
-    # 最新的日志在前面
-    log_content.reverse()
-    
-    return render_template('logs.html', log_content=log_content)
-
-# 添加下载日志文件的路由
-@app.route('/download_logs')
-def download_logs():
-    log_file = os.path.join(log_dir, 'import.log')
-    
-    # 如果日志文件不存在，创建一个空文件
-    if not os.path.exists(log_file):
-        with open(log_file, 'w', encoding='utf-8') as f:
-            f.write("暂无导入日志\n")
-    
-    return send_file(log_file, as_attachment=True, download_name='import_logs.txt')
-
-# 辅助函数：根据支付宝交易信息映射到自定义类别
-def map_alipay_category(description):
-    # 这里可以根据关键词匹配来确定类别
-    description = description.lower() if description else ""
-    
-    # 食品类别的二级分类
-    if any(keyword in description for keyword in ['超市', '大润发', '永辉']):
-        return '食品', '超市'
-    elif any(keyword in description for keyword in ['外卖', '美团', '饿了么']):
-        return '食品', '外卖'
-    elif any(keyword in description for keyword in ['餐厅', '餐饮', '饭店']):
-        return '食品', '餐厅'
-    elif any(keyword in description for keyword in ['零食', '饮料']):
-        return '食品', '零食饮料'
-        
-    # 购物类别的二级分类
-    elif any(keyword in description for keyword in ['淘宝', '天猫', '京东']):
-        return '购物', '网购'
-    elif any(keyword in description for keyword in ['服装', '衣服', '鞋子']):
-        return '购物', '服饰'
-    elif any(keyword in description for keyword in ['电子', '数码', '手机']):
-        return '购物', '数码电子'
-    elif any(keyword in description for keyword in ['日用', '家居']):
-        return '购物', '日用家居'
-        
-    # 宠物类别的二级分类
-    elif any(keyword in description for keyword in ['宠物', '猫', '狗']):
-        if any(keyword in description for keyword in ['食品', '粮食']):
-            return '宠物', '宠物食品'
-        elif any(keyword in description for keyword in ['医疗', '兽医']):
-            return '宠物', '宠物医疗'
+            except Exception as e:
+                db.session.rollback()  # 发生错误时回滚事务
+                flash(f'导入失败: {str(e)}', 'error')
+                return redirect(request.url)
         else:
-            return '宠物', '其他宠物支出'
-            
-    # 住房类别的二级分类
-    elif any(keyword in description for keyword in ['房租']):
-        return '住房', '房租'
-    elif any(keyword in description for keyword in ['水电', '电费', '水费']):
-        return '住房', '水电费'
-    elif any(keyword in description for keyword in ['物业', '管理费']):
-        return '住房', '物业费'
-    elif any(keyword in description for keyword in ['维修', '装修']):
-        return '住房', '维修装修'
-        
-    # 交通类别的二级分类
-    elif any(keyword in description for keyword in ['地铁', '公交', '公共交通']):
-        return '交通', '公共交通'
-    elif any(keyword in description for keyword in ['打车', '滴滴', '出租车']):
-        return '交通', '打车'
-    elif any(keyword in description for keyword in ['加油', '汽油']):
-        return '交通', '加油'
-    elif any(keyword in description for keyword in ['停车']):
-        return '交通', '停车费'
-        
-    # 休闲娱乐类别的二级分类
-    elif any(keyword in description for keyword in ['电影', '影院', '电影院']):
-        return '休闲娱乐', '电影'
-    elif any(keyword in description for keyword in ['游戏', '游戏充值']):
-        return '休闲娱乐', '游戏'
-    elif any(keyword in description for keyword in ['旅游', '景点', '门票']):
-        return '休闲娱乐', '旅游'
-    elif any(keyword in description for keyword in ['健身', '运动']):
-        return '休闲娱乐', '健身运动'
-        
-    # 医疗保健类别的二级分类
-    elif any(keyword in description for keyword in ['医院', '诊所']):
-        return '医疗保健', '就医'
-    elif any(keyword in description for keyword in ['药店', '药房', '药']):
-        return '医疗保健', '药品'
-    elif any(keyword in description for keyword in ['体检']):
-        return '医疗保健', '体检'
-        
-    # 工作学习类别的二级分类
-    elif any(keyword in description for keyword in ['书籍', '书店']):
-        return '工作学习', '书籍'
-    elif any(keyword in description for keyword in ['学习', '培训', '课程']):
-        return '工作学习', '培训课程'
-    elif any(keyword in description for keyword in ['办公', '文具']):
-        return '工作学习', '办公用品'
-        
-    # 金融保险类别的二级分类
-    elif any(keyword in description for keyword in ['保险']):
-        return '金融保险', '保险'
-    elif any(keyword in description for keyword in ['理财', '投资']):
-        return '金融保险', '理财投资'
-    elif any(keyword in description for keyword in ['手续费', '服务费']):
-        return '金融保险', '手续费'
-        
-    # 人情往来类别的二级分类
-    elif any(keyword in description for keyword in ['红包']):
-        return '人情往来', '红包'
-    elif any(keyword in description for keyword in ['礼金', '礼物']):
-        return '人情往来', '礼金礼物'
-    elif any(keyword in description for keyword in ['请客']):
-        return '人情往来', '请客'
-        
-    # 育儿类别的二级分类
-    elif any(keyword in description for keyword in ['儿童', '婴儿']):
-        if any(keyword in description for keyword in ['食品', '奶粉']):
-            return '育儿', '儿童食品'
-        elif any(keyword in description for keyword in ['玩具']):
-            return '育儿', '儿童玩具'
-        elif any(keyword in description for keyword in ['教育', '培训']):
-            return '育儿', '儿童教育'
-        else:
-            return '育儿', '其他育儿支出'
+            flash('请上传CSV文件', 'error')
+            return redirect(request.url)
     
-    # 默认返回其他类别
-    else:
-        return '其他', '未分类'
-
-# 辅助函数：根据微信交易信息映射到自定义类别
-def map_wechat_category(description):
-    # 与支付宝类似的映射逻辑
-    return map_alipay_category(description)  # 可以复用支付宝的映射逻辑
+    return render_template('import_bill.html')
 
 if __name__ == '__main__':
     with app.app_context():

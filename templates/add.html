@@ -3,29 +3,6 @@
 {% block content %}
 <h2>添加交易记录</h2>
 
-<!-- 添加账单导入功能 -->
-<div class="card mb-4">
-    <div class="card-header">
-        账单导入
-    </div>
-    <div class="card-body">
-        <form method="POST" enctype="multipart/form-data" action="{{ url_for('import_bill') }}">
-            <div class="mb-3">
-                <label class="form-label">账单类型</label>
-                <select name="bill_type" class="form-select" style="width: auto; min-width: 150px;">
-                    <option value="alipay">支付宝账单</option>
-                    <option value="wechat">微信账单</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">上传账单文件 (CSV格式)</label>
-                <input type="file" name="bill_file" class="form-control" style="width: auto; min-width: 300px;" accept=".csv">
-            </div>
-            <button type="submit" class="btn btn-success">导入账单</button>
-        </form>
-    </div>
-</div>
-
 <!-- 原有的手动添加表单 -->
 <div class="card">
     <div class="card-header">

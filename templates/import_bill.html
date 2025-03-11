@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>账单导入</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">导入说明</h5>
+            <p>请先下载模板文件，按照模板格式填写您的账单数据，然后上传导入。</p>
+            <a href="{{ url_for('download_template') }}" class="btn btn-primary">下载账单模板</a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">上传账单文件</h5>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="file" class="form-label">选择CSV文件</label>
+                    <input type="file" class="form-control" id="file" name="file" accept=".csv" required>
+                </div>
+                <button type="submit" class="btn btn-success">导入账单</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

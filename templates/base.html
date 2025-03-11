@@ -14,10 +14,11 @@
                 <a class="nav-link" href="/">首页</a>
                 <a class="nav-link" href="/income">收入</a>
                 <a class="nav-link" href="/expense">支出</a>
-                <a class="nav-link" href="/add">添加记录</a>
-                <!-- 在导航栏中添加日志链接 -->
+                <a class="nav-link" href="/add">添加/导入记录</a>
+                <!-- 修改了链接文本，表明该页面同时支持添加和导入功能 -->
+                <!-- 在导航栏中添加以下链接 -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('view_import_logs') }}">导入日志</a>
+                    <a class="nav-link" href="{{ url_for('import_bill') }}">账单导入</a>
                 </li>
             </div>
         </div>
